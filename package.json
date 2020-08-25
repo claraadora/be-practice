@@ -4,6 +4,7 @@
     "description": "",
     "main": "app.js",
     "dependencies": {
+        "express": "^4.17.1",
         "prettier": "^2.1.0"
     },
     "devDependencies": {
