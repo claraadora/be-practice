@@ -19,20 +19,23 @@ const server = http.createServer((req, res) => {
             console.log(chunk);
             body.push(chunk); //buffered chunks
         });
-        req.on("end", () => {
+        return req.on("end", () => {
             const parsedBody = Buffer.concat(body).toString();
             const message = parsedBody.split("=")[1];
             console.log(message);
-            fs.writeFileSync("message.txt", message);
+            // fs.writeFileSync("message.txt", message); // sync = block the code operation til the file operation is done
+            fs.writeFile("message.txt", message, (err) => {
+                res.statusCode = 302;
+                res.setHeader("Location", "/");
+                return res.end();
+            }); // event-driven execution ==> does not block the code.
         });
-        res.statusCode = 302; //redirection
-        res.setHeader("Location", "/");
-        return res.end();
     }
     res.setHeader("Content-Type", "text/html");
     res.write(
         "<html><head><title>My First Page</title></head><body><h1>HELLO</h1></body></html>"
     );
+    res.end();
 }); // start an event loop that keeps on running as long its still registered
 
 server.listen(3000);
