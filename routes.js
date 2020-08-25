@@ -1,8 +1,10 @@
 const fs = require("fs");
+const { request } = require("http");
 
 const requestHandler = (req, res) => {
     const url = req.url;
     const method = req.method;
+
     if (url === "/") {
         res.write("<html>");
         res.write("<head><title>be-prac</title></head>");
@@ -36,3 +38,10 @@ const requestHandler = (req, res) => {
     );
     res.end();
 };
+
+module.exports = requestHandler;
+
+// module.exports = {
+//     handler: requestHandler,
+//     someText: "Hello",
+// };
