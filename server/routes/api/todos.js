@@ -52,9 +52,17 @@ router.delete("/:id", async (req, res) => {
         res.status(500).send("Server Error");
     }
 });
-module.exports = router;
 
 // @route   UPDATE api/todos/:id
 // @desc    Update a todo
 // @access  Public
-router.put("/todos/:id", async (req, res) => {});
+router.put("/:id", async (req, res) => {
+    try {
+        await Todo.findByIdAndUpdate(req.params.id, { $set: req.body });
+        res.status(202).send("Todo edited successfully");
+    } catch (err) {
+        res.status(500).send("Server Error");
+    }
+});
+
+module.exports = router;

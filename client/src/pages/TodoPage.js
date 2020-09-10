@@ -14,10 +14,17 @@ import {
     Button,
     Grid,
 } from "@material-ui/core";
+import { green, red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles({
     table: {
         minWidth: 800,
+    },
+    rowDone: {
+        backgroundColor: green[300],
+    },
+    rowNotDone: {
+        backgroundColor: red[300],
     },
 });
 
@@ -58,8 +65,29 @@ export default function TodoPage() {
             const config = {
                 headers: { "Content-Type": "application/json" },
             };
-            const res = await axios.delete(`/api/todos/${id}`, config);
+            await axios.delete(`/api/todos/${id}`, config);
             const temp = todos.filter((todo) => todo._id !== id);
+            setTodos(temp);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    // EDIT
+    const onEditTodo = async (id, updatedTodo) => {
+        try {
+            const config = {
+                headers: { "Content-Type": "application/json" },
+            };
+            const body = JSON.stringify(updatedTodo);
+            await axios.put(`/api/todos/${id}`, body, config);
+
+            const temp = todos.map((todo) => {
+                if (todo._id === id) {
+                    return updatedTodo;
+                }
+                return todo;
+            });
             setTodos(temp);
         } catch (err) {
             console.log(err);
@@ -95,7 +123,13 @@ export default function TodoPage() {
                         </TableHead>
                         <TableBody>
                             {todos.map((todo) => (
-                                <TableRow key={todo._id}>
+                                <TableRow
+                                    key={todo._id}
+                                    className={
+                                        todo.isDone
+                                            ? classes.rowDone
+                                            : classes.rowNotDone
+                                    }>
                                     <TableCell component='th' scope='row'>
                                         {todo.date}
                                     </TableCell>
@@ -103,10 +137,15 @@ export default function TodoPage() {
                                         {todo.description}
                                     </TableCell>
                                     <TableCell component='th' scope='row'>
-                                        {todo.isDone}
-                                    </TableCell>
-                                    <TableCell component='th' scope='row'>
-                                        <Button>Toggle</Button>
+                                        <Button
+                                            onClick={() =>
+                                                onEditTodo(todo._id, {
+                                                    ...todo,
+                                                    isDone: !todo.isDone,
+                                                })
+                                            }>
+                                            Toggle
+                                        </Button>
                                         <Button>Edit</Button>
                                         <Button
                                             onClick={() =>
