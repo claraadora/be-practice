@@ -1,0 +1,27 @@
+{
+    "name": "todo",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node server",
+        "server": "cd server && npm run server",
+        "client": "cd client && npm start",
+        "dev": "concurrently \"npm run server\" \"npm run client\"",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/claraadora/be-practice.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/claraadora/be-practice/issues"
+    },
+    "homepage": "https://github.com/claraadora/be-practice#readme",
+    "devDependencies": {
+        "concurrently": "^5.2.0",
+        "nodemon": "^2.0.4"
+    }
+}

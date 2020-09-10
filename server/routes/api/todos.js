@@ -47,9 +47,14 @@ router.delete("/:id", async (req, res) => {
 
         await todo.remove();
 
-        res.json({ msg: "Post removed" });
+        res.json({ msg: "Todo deleted" });
     } catch (err) {
         res.status(500).send("Server Error");
     }
 });
 module.exports = router;
+
+// @route   UPDATE api/todos/:id
+// @desc    Update a todo
+// @access  Public
+router.put("/todos/:id", async (req, res) => {});
